@@ -1,3 +1,0 @@
-[submodule "server/docs"]
-	path = server/docs
-	url = https://github.com/adafruit/io-api.git
