@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+  <title>AdaFruit IO HTTP Send</title>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+</head>
+<body>
+
+    <input type="text" id="mydata" value="0"> <button id="send">SEND</button>
+    
+    <script type="text/javascript">
+    
+    
+    $("#send").click( () => {
+      sendData();
+    } );
+
+
+
+    function sendData(){
+      
+      var username = '_name';
+      var feed = '_group._feed';
+      var url = "https://io.adafruit.com/api/v2/"+username+"/feeds/"+feed+"/data";
+      var aio_key = '';
+      var mydata = $("#mydata").val();
+
+      $.ajax({
+              headers: {'X-AIO-Key': aio_key },
+              method: "POST",
+              data: { value: mydata },
+              url: url,
+              success: function (){
+                alert('Thanks for your data!'); 
+              }
+          });
+      }
+    
+    
+    </script>
+
+
+</body>
+</html>
