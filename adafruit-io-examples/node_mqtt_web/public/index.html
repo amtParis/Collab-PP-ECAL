@@ -1,0 +1,53 @@
+<html>
+	<head>
+		<title>MQTT WEB</title>
+		<style>
+		.en{ color: red; }
+		</style>
+	</head>
+	<body>
+		<h2>Adafruit Value:</h2>
+		<div id="message-container"></div>
+	
+	<script  type="text/javascript" src="./socket.io.js"></script>
+	<script>
+
+		function addMessage(msg,lang){
+			var newElem = document.createElement('div');
+      		newElem.innerHTML = msg;
+      		if(lang=='en') newElem.classList.add('en');
+      		else if(lang=='fr') newElem.classList.add('fr');
+
+      		var container = document.getElementById('message-container');
+      		container.prepend(newElem);
+		}
+
+    	var socket = io();
+    	socket.on('message', function(msg){
+      		console.log(msg);
+      		//document.getElementById('value').innerHTML = msg;
+      		var newElem = document.createElement('div');
+      		newElem.innerHTML = "incoming message " + msg;
+      		newElem.classList.add('en');
+
+      		var container = document.getElementById('message-container');
+      		container.prepend(newElem);
+    	});
+
+    	socket.on('prevData', function(data){
+      		console.log(data);
+      		data.forEach( (item)=>{
+      			var jsonParses = JSON.parse(item.value);
+      			addMessage(jsonParses.message,jsonParses.lang);
+      			
+      		} );
+      		
+    	});
+
+    	//body.forEach( (item)=>{
+    //console.log(item.value);
+  	//});
+
+</script>
+</body>
+</html>
