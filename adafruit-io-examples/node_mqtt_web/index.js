@@ -30,7 +30,7 @@ http.listen(port, function(){
 //-------- Adafruit + MQTT
 
 var username = 'sugrueca';
-var key = 'ed52791436c043e08fedaf7109a3b193';
+var key = '';
 var feed = 'happiness';
 var feed2 = 'emoji';
 
