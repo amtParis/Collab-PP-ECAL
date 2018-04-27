@@ -30,9 +30,8 @@ http.listen(port, function(){
 //-------- Adafruit + MQTT
 
 var username = 'sugrueca';
-var key = '';
-var feed = 'happiness';
-var feed2 = 'emoji';
+var key = 'ed52791436c043e08fedaf7109a3b193';
+var feed = 'emoji';
 
 //-------- request previous data
 
@@ -48,7 +47,6 @@ var client = mqtt.connect('mqtts://io.adafruit.com',{
 });
 
 var my_topic_name = username + '/f/' + feed;
-var my_topic_name2 = username + '/f/' + feed2;
 
 
 
@@ -61,8 +59,7 @@ var my_topic_name2 = username + '/f/' + feed2;
 client.on('connect', () => {
   console.log('MQTT connect.');
   client.subscribe(my_topic_name);
-  client.subscribe(my_topic_name2);
-  client.subscribe(topic_all);
+
 });
 
 // if an error occurs 
@@ -77,19 +74,14 @@ client.on('message',  (topic, message) => {
   if(topic == my_topic_name) {
     try{
       console.log(message.toString()); 
-      io.emit('message', message.toString());    
+      var jsonData = JSON.parse(message.toString());
+      io.emit('message', jsonData);    
+    
     }catch(error){
       console.log(error);
     }
   } 
-  else if(topic == my_topic_name2) {
-    try{
-      console.log(message.toString()); 
-      io.emit('message2', message.toString());
-    }catch(error){
-      console.log(error);
-    }
-  } 
+  
   
 
 });

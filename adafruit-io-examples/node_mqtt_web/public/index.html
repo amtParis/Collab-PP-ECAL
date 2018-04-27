@@ -2,7 +2,8 @@
 	<head>
 		<title>MQTT WEB</title>
 		<style>
-		.en{ color: red; }
+		  .en{ color: red; }
+      .fr{color:blue;}
 		</style>
 	</head>
 	<body>
@@ -11,37 +12,35 @@
 	
 	<script  type="text/javascript" src="./socket.io.js"></script>
 	<script>
+    var addedPrev = false;
 
-		function addMessage(msg,lang){
+		function addMessage(msg,lang,prepend){
 			var newElem = document.createElement('div');
       		newElem.innerHTML = msg;
       		if(lang=='en') newElem.classList.add('en');
       		else if(lang=='fr') newElem.classList.add('fr');
 
       		var container = document.getElementById('message-container');
-      		container.prepend(newElem);
+      		if(prepend) container.prepend(newElem);
+          else container.appendChild(newElem);
 		}
 
     	var socket = io();
     	socket.on('message', function(msg){
       		console.log(msg);
-      		//document.getElementById('value').innerHTML = msg;
-      		var newElem = document.createElement('div');
-      		newElem.innerHTML = "incoming message " + msg;
-      		newElem.classList.add('en');
-
-      		var container = document.getElementById('message-container');
-      		container.prepend(newElem);
+      		addMessage(msg.message,msg.lang,true);
     	});
 
     	socket.on('prevData', function(data){
-      		console.log(data);
-      		data.forEach( (item)=>{
-      			var jsonParses = JSON.parse(item.value);
-      			addMessage(jsonParses.message,jsonParses.lang);
-      			
-      		} );
       		
+      		if(!addedPrev){
+              console.log(data);
+              data.forEach( (item)=>{
+      			     var jsonParses = JSON.parse(item.value);
+      			     addMessage(jsonParses.message,jsonParses.lang,false);
+      			   });
+          }
+      		addedPrev = true;
     	});
 
     	//body.forEach( (item)=>{
